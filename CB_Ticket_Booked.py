@@ -1,0 +1,36 @@
+from tkinter import *
+from tkinter import messagebox as mb
+root=Tk()
+w=root.winfo_screenwidth()
+h=root.winfo_screenheight()
+root.geometry("%dx%d+0+0"%(w,h))
+
+#basic Headings
+bus=PhotoImage(file="./assets/Bus_for_project.png")
+Label(root, image=bus).grid(row=0, column=0)
+H=Label(root, text="Online Bus Booking System", fg="red", bg="lightblue", font=("Arial Bold", 40))
+H.grid(row=1, column=0)
+root.update()
+a=w-H.winfo_width()
+H.destroy()
+H=Label(root, text="Online Bus Booking System", fg="red", bg="lightblue", font=("Arial Bold", 40))
+H.grid(row=1, column=0, padx=a//2)
+
+#Ticket Information
+Label(root, text="Bus Ticket", font=("Arial Bold", 15)).grid(row=2,column=0, pady=20)
+ticket=Frame(root, borderwidth=5, relief="ridge")
+Label(ticket, text="Passengers: Mahesh Kumar", font=("Arial Bold", 15)).grid(row=0,column=0)
+Label(ticket, text="No of Seats: 3", font=("Arial Bold", 15)).grid(row=1,column=0)
+Label(ticket, text="Age: 45", font=("Arial Bold", 15)).grid(row=2,column=0)
+Label(ticket, text="Booking Ref: 9", font=("Arial Bold", 15)).grid(row=3,column=0)
+Label(ticket, text="Travel On: 24/12/2022", font=("Arial Bold", 15)).grid(row=4,column=0)
+Label(ticket, text="Gender Male", font=("Arial Bold", 15)).grid(row=5,column=0)
+Label(ticket, text="Phon3: 9988776655", font=("Arial Bold", 15)).grid(row=0,column=1)
+Label(ticket, text="Fare Rs: 3000.00 *", font=("Arial Bold", 15)).grid(row=1,column=1)
+Label(ticket, text="Bus Details: Kamla", font=("Arial Bold", 15)).grid(row=2,column=1)
+Label(ticket, text="Booked On: Oct31 2022", font=("Arial Bold", 15)).grid(row=3,column=1)
+Label(ticket, text="Boarding Point: Guna", font=("Arial Bold", 15)).grid(row=4,column=1)
+Label(ticket, text="*Total amount Rs 3000.00/- to be paid at the time of Boarding the Bus", font=10).grid(row=6,column=0, columnspan=2)
+ticket.grid(row=4,column=0)
+mb.showinfo("Success", message="Seat Booked")
+root.mainloop()
