@@ -3,8 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# Other-User-specified
+# Other-User-specified for sumukh1210
 __pycache__
+Test Database
 
 # User-specific files
 *.rsuser
