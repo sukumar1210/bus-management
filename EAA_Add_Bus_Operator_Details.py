@@ -18,9 +18,11 @@ def add_bop():
         iname=name.get()
         iaddress=address.get()
         iphn=phn.get()
-        print("phone ", iphn)
-        imail=mail.get()        
-        cur.execute("insert into OPERATOR values({},'{}','{}','{}',{})".format(iopid,iname,iaddress,imail,iphn))
+        imail=mail.get()
+        if str(iopid)=="":
+            cur.execute("insert into OPERATOR(ONAME, ADDRESS, EMAIL, PHONE) values('{}','{}','{}',{})".format(iname,iaddress,imail,iphn))
+        else:
+            cur.execute("insert into OPERATOR values({},'{}','{}','{}',{})".format(iopid,iname,iaddress,imail,iphn))
         Label(options, text="{}".format(str(iopid)+" "+str(iname)+" "+str(iaddress)+" "+str(imail)+" "+str(iphn))).grid(row=1,column=0, columnspan=11)
         mb.showinfo("Operator Entry", message="Operator Record Added")
         conn.commit()

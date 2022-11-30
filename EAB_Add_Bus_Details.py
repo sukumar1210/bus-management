@@ -22,7 +22,10 @@ def add_bd():
         ifare=fare.get()
         iopid=opid.get()
         irid=rid.get()
-        cur.execute("insert into bus values({}, '{}',{},{},{},{})".format(ibid ,it, icap, ifare, iopid, irid))
+        if str(ibid)=="":
+            cur.execute("insert into BUS(TYPE, CAPACITY, FARE, OPID, ROUTEID) values('{}',{},{},{},{})".format(it, icap, ifare, iopid, irid))
+        else:
+            cur.execute("insert into BUS values({}, '{}',{},{},{},{})".format(ibid ,it, icap, ifare, iopid, irid))
         Label(options, text="{}".format((ibid)+" "+str(it)+" "+str(icap)+" "+str(ifare)+" "+str(iopid)+" "+str(irid))).grid(row=1,column=0, columnspan=11)
         mb.showinfo("Bus Details Entry", message="Bus Record Added")
         conn.commit() 

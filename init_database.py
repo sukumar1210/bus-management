@@ -97,6 +97,7 @@ cur.execute('insert into OPERATOR values(4,"Mohan","AB road jhasi","Mohan@gmail.
 cur.execute('insert into RUNS values(1,"2022-11-20",30)')
 cur.execute('insert into RUNS values(1,"2022-11-21",30)')
 cur.execute('insert into RUNS values(1,"2022-11-22",30)')
+cur.execute('insert into RUNS values(3,"2022-11-20",30)')
 cur.execute('insert into RUNS values(4,"2022-11-23",30)')
 cur.execute('insert into RUNS values(2,"2022-11-24",30)')
 cur.execute('insert into RUNS values(2,"2022-11-25",30)')

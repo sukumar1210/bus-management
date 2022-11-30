@@ -19,16 +19,21 @@ def home():
 
 #Function for 'Show Bus'
 def show():
+    for i in options.winfo_children():
+        i.destroy()
     #Function to transfer data to bticket function
     def transfer():
-        bticket(b.get(),istart, idate)
+        if b.get()==0:
+            mb.showerror("Select Bus", message="No Bus Selected")
+        else:
+            bticket(b.get(),istart, idate)
     
     #Attributes
-    Label(options,text="Select Bus", fg="green", font=("Arial Bold", 15)).grid(row=2,column=0, pady=40)
-    Label(options,text="Operator", fg="green", font=("Arial Bold", 15)).grid(row=2,column=1)
-    Label(options,text="Bus Type", fg="green", font=("Arial Bold", 15)).grid(row=2,column=2, padx=10)
-    Label(options,text="Availability/Capacity", fg="green", font=("Arial Bold", 15)).grid(row=2,column=3)
-    Label(options,text="Fare", fg="green", font=("Arial Bold", 15)).grid(row=2,column=4)
+    Label(options,text="Select Bus", fg="green", font=("Arial Bold", 15)).grid(row=2,column=0, pady=40, padx=20)
+    Label(options,text="Operator", fg="green", font=("Arial Bold", 15)).grid(row=2,column=1, padx=20)
+    Label(options,text="Bus Type", fg="green", font=("Arial Bold", 15)).grid(row=2,column=2, padx=20)
+    Label(options,text="Availability/Capacity", fg="green", font=("Arial Bold", 15)).grid(row=2,column=3, padx=20)
+    Label(options,text="Fare", fg="green", font=("Arial Bold", 15)).grid(row=2,column=4, padx=20)
     
     #Dummy Data
     # b=IntVar()
@@ -59,7 +64,9 @@ def show():
     data=data.fetchall()
     print(data)
     b=IntVar()
+    i=0
     for i in range(len(data)):
+        print("in for")
         boption=Radiobutton(options,text="{}".format("Bus"+str(i+1)), variable=b, value=data[i][4], bg="lightblue" , font=("Arial Bold", 15)).grid(row=i+3,column=0, pady=10)
         Label(options,text="{}".format(data[i][0]), fg="blue", font=("Arial Bold", 15)).grid(row=i+3,column=1)
         Label(options,text="{}".format(data[i][1]), fg="blue", font=("Arial Bold", 15)).grid(row=i+3,column=2)
@@ -121,14 +128,22 @@ def bticket(bid, board, board_date):
                 Label(ticket, text="Boarding Point: {}".format(userdata[i][8]), font=("Arial Bold", 15)).grid(row=4,column=1)
                 Label(ticket, text="*Total amount Rs {}/- to be paid at the time of Boarding the Bus".format(busdata[0][3]*userdata[i][4]), font=10).grid(row=6,column=0, columnspan=2)
                 ticket.grid(row=2, column=0)
+                Label(conf, text="Pess Any Key To Continue.", font=("Arial, Bold", 15)).grid(row=3, column=0, pady=30)
                 mb.showinfo("Success", message="Seat Booked")
+                def dummy(temp=0):
+                    conf.destroy()
+                    import B
+                conf.bind("<KeyPress>", dummy)
         conf.mainloop()
     #Query
     def add_Bhistory():
-        cur.execute("insert into BOOKING_HISTORY values({}, '{}', '{}', {}, {}, '{}', '{}', {}, '{}')".format(mobile.get(), name.get(), gender_var.get(), bid, seats.get(), tdate, board_date, age.get(), board))
-        cur.execute("update RUNS SET SEAT_AVAIL=SEAT_AVAIL-{} where BUSID={} and DATE='{}'".format(seats.get(), bid, board_date))
-        conn.commit()
-        confirmed()
+        try:
+            cur.execute("insert into BOOKING_HISTORY values({}, '{}', '{}', {}, {}, '{}', '{}', {}, '{}')".format(mobile.get(), name.get(), gender_var.get(), bid, seats.get(), tdate, board_date, age.get(), board))
+            cur.execute("update RUNS SET SEAT_AVAIL=SEAT_AVAIL-{} where BUSID={} and DATE='{}'".format(seats.get(), bid, board_date))
+            conn.commit()
+            confirmed()
+        except:
+            mb.showerror("Failure", message="Invalid Input")
     #Ticket Confirmation Dialog box
     def farediag():
         fare=cur.execute("Select FARE from BUS where BUSID={}".format(bid))
@@ -139,7 +154,7 @@ def bticket(bid, board, board_date):
     print(bid, board, board_date)
     
     
-    Label(root, text="Fill Passenger Details to book the bus ticket", font=("Arial Bold", 30), fg="red", bg="lightblue").grid(row=4, column=0, columnspan=8, pady=30)
+    Label(root, text="Fill Passenger Details to book the bus ticket", font=("Arial Bold", 30), fg="red", bg="lightblue").grid(row=5, column=0, columnspan=8, pady=30)
     book=Frame(root)
     Label(book, text="Name", font=15).grid(row=0, column=0, padx=10)
     name=Entry(book, font=15)
@@ -160,7 +175,7 @@ def bticket(bid, board, board_date):
     age=Entry(book , width=3, font=15)
     age.grid(row=0, column=9, padx=10)
     book_button=Button(book, text="Book Seat" , command=farediag, font=15).grid(row=0, column=10, padx=10)
-    book.grid(row=5, column=0)
+    book.grid(row=6, column=0)
 
 
 #Basic Heading
@@ -182,19 +197,21 @@ Label(root, text="Enter Journey Details", fg="green4", bg="springgreen2", font=(
 
 #Frame for Options
 options=Frame(root)
-Label(options, text="To", font=("Arial Bold", 15)).grid(row=0, column=0, padx=5)
-start=Entry(options )
+option1=Frame(root)
+Label(option1, text="To", font=("Arial Bold", 15)).grid(row=0, column=0, padx=5)
+start=Entry(option1 )
 start.grid(row=0, column=1)
-Label(options, text="From", font=("Arial Bold", 15)).grid(row=0, column=2, padx=5)
-end=Entry(options, width=25 )
+Label(option1, text="From", font=("Arial Bold", 15)).grid(row=0, column=2, padx=5)
+end=Entry(option1, width=25 )
 end.grid(row=0, column=3)
-Label(options, text="Journey Date", font=("Arial Bold", 15)).grid(row=0, column=4, padx=5)
-date=Entry(options )
+Label(option1, text="Journey Date", font=("Arial Bold", 15)).grid(row=0, column=4, padx=5)
+date=Entry(option1 )
 date.grid(row=0, column=5)
-show=Button(options, text="Show Bus", bg="springgreen3", font=("Arial Bold", 15), command=show).grid(row=0, column=6, padx=5)
+show=Button(option1, text="Show Bus", bg="springgreen3", font=("Arial Bold", 15), command=show).grid(row=0, column=6, padx=5)
 hm=PhotoImage(file="./assets/home.png")
-home=Button(options, image=hm, command=home).grid(row=0, column=7, padx=5)
-options.grid(row=3, column=0)
+homeb=Button(option1, image=hm, command=home).grid(row=0, column=7, padx=5)
+option1.grid(row=3, column=0)
+options.grid(row=4, column=0)
 root.mainloop()
 conn.commit()
 conn.close()
